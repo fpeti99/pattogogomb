@@ -13,11 +13,13 @@ namespace button_pingpong
     public partial class Form1 : Form
     {
         int sebesseg = 4;
-        int novekmeny_x;
+        double novekmeny_x;
         int novekmeny_y;
         uint ido = 0;
         uint szamlalo = 0;
         Button[] gombok = new Button[100];
+
+        int pont = 0;
 
         public Form1()
         {
@@ -57,7 +59,7 @@ namespace button_pingpong
                 Text = szoveg;
              }
 
-            button1.Left = button1.Left + novekmeny_x;
+            button1.Left = button1.Left + (int)novekmeny_x;
             button1.Top = button1.Top + novekmeny_y;
             if (button1.Left + button1.Width + 15 > Width) novekmeny_x = -sebesseg;
             if (button1.Left < 0) novekmeny_x = sebesseg;
@@ -70,13 +72,35 @@ namespace button_pingpong
                 button2.Visible = false;
                 button1.Visible = false;
                 button3.Text = "Játék újraindítása!";
+                MessageBox.Show(pont + " pontod lett!");
             }
 
             if (button1.Top + button1.Height > button2.Top && button1.Left > button2.Left && button1.Left < button2.Left + button2.Width)
             {
                 novekmeny_y = -sebesseg;
+
+                //novekmeny_x = (-sebesseg + ((double)button1.Left - (double)button2.Left) / 146 * (sebesseg * 2));
+
             }
 
+            for(int i = 0; i < 20; i++)
+            {
+                if(button1.Top < (gombok[i].Top + gombok[i].Height) && button1.Left > gombok[i].Left && button1.Left < (gombok[i].Left + gombok[i].Width))
+                {
+                    gombok[i].Left = -2000;
+                    gombok[i].Top = -2000;
+                    novekmeny_x = sebesseg;
+                    novekmeny_y = sebesseg;
+                    pont++;
+                }
+            }
+
+            if(pont == 20)
+            {
+                timer1.Enabled = false;
+                MessageBox.Show("Nyertél!");
+                button3.Visible = true;
+            }
        
 
         }
@@ -98,6 +122,10 @@ namespace button_pingpong
 
         private void button3_Click(object sender, EventArgs e)
         {
+            for(int i = 0; i < 20; i++)
+            {
+                Controls.Remove(gombok[i]);
+            }
             button1.Left = 197;
             button1.Top = 98;
             button3.Visible = false;
@@ -106,6 +134,7 @@ namespace button_pingpong
             timer1.Enabled = true;
             ido = 0;
             gombok_lerakasa(20);
+            pont = 0;
             /*gomb = new Button();
             gomb.Text = "elso";
             gomb.BackColor = Color.LightBlue;
