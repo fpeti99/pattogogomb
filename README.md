@@ -1,5 +1,67 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Drawing;
+
+namespace button_pingpong
+{
+    class tegla
+    {
+        public tegla (int teglak_szama)
+        {
+
+        }
+
+        public void gombok_lerakasa(int hany_gomb, Button[] gombok, Form1 form1, int szelesseg)
+        {
+            int sor = 0;
+            int gomb_a_sorban = 0;
+
+            for (int i = 0; i < hany_gomb; i++)
+            {
+                gombok[i] = new Button();
+                if (gombok[i].Width * gomb_a_sorban > szelesseg)
+                {
+                    sor++;
+                    gomb_a_sorban = 0;
+                }
+                gombok[i].Left = gombok[i].Width * gomb_a_sorban;
+                gomb_a_sorban++;
+                gombok[i].Top = gombok[i].Height * sor;
+                gombok[i].BackColor = Color.DarkRed;
+                gombok[i].Text = i.ToString();
+                gombok[i].FlatStyle = FlatStyle.Flat;
+                form1.Controls.Add(gombok[i]);
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -26,28 +88,7 @@ namespace button_pingpong
             InitializeComponent();
         }
 
-        void gombok_lerakasa(int hany_gomb)
-        {
-            int sor = 0;
-            int gomb_a_sorban = 0;
-
-            for(int i = 0; i < hany_gomb; i++)
-            {
-                gombok[i] = new Button();
-                if(gombok[i].Width * gomb_a_sorban > Width)
-                {
-                    sor++;
-                    gomb_a_sorban = 0;
-                }
-                gombok[i].Left = gombok[i].Width * gomb_a_sorban;
-                gomb_a_sorban++;
-                gombok[i].Top = gombok[i].Height * sor;
-                gombok[i].BackColor = Color.DarkRed;
-                gombok[i].Text = i.ToString();
-                gombok[i].FlatStyle = FlatStyle.Flat;
-                Controls.Add(gombok[i]);
-            }
-        }
+        
 
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -78,9 +119,6 @@ namespace button_pingpong
             if (button1.Top + button1.Height > button2.Top && button1.Left > button2.Left && button1.Left < button2.Left + button2.Width)
             {
                 novekmeny_y = -sebesseg;
-
-                //novekmeny_x = (-sebesseg + ((double)button1.Left - (double)button2.Left) / 146 * (sebesseg * 2));
-
             }
 
             for(int i = 0; i < 20; i++)
@@ -94,6 +132,8 @@ namespace button_pingpong
                     pont++;
                 }
             }
+
+            
 
             if(pont == 20)
             {
@@ -133,7 +173,10 @@ namespace button_pingpong
             button1.Visible = true;
             timer1.Enabled = true;
             ido = 0;
-            gombok_lerakasa(20);
+
+            tegla d = new tegla(20);
+            d.gombok_lerakasa(20, gombok, this, Width);
+
             pont = 0;
             /*gomb = new Button();
             gomb.Text = "elso";
